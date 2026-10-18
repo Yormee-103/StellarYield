@@ -111,8 +111,11 @@ Source: `contracts/dutch_auction/src/lib.rs`
 | 10   | `InvalidParams`         | Payment would exceed `max_debt_payment`                                 | Raise `max_debt_payment` or retry later                           |
 | 11   | `AuctionStillActive`    | Auction has not expired yet                                             | Wait for the duration to elapse                                   |
 | 12   | `NothingToLiquidate`    | No remaining collateral to return                                       | No action needed                                                  |
-| 13   | `InvalidConfig`         | Auction parameters are impossible as a set: zero duration, empty inventory, non-positive floor price, floor above start price, or an unrepresentable end time. Also returned by `initialize` / `update_params` for zero duration, `floor_discount_bps` above 9 999, or `penalty_bps` above 10 000 | Fix the parameters (#1477) |
-| 14   | `MathOverflow`          | An amount or price does not fit an `i128`                               | Reduce the quantity or price inputs (#1476)                       |
+| 13   | `PurchaseIdConflict`    | A purchase id was reused with a different payload                       | Use a fresh purchase id, or resend the identical request          |
+| 14   | `NothingToWithdraw`     | No proceeds or unsold collateral are currently withdrawable            | Wait for a fill or a terminal auction state                       |
+| 15   | `InventoryExceeded`     | A fill would push sold collateral past the auctioned inventory          | Reduce the requested quantity                                     |
+| 16   | `InvalidConfig`         | Auction parameters are impossible as a set: zero duration, empty inventory, non-positive floor price, floor above start price, or an unrepresentable end time. Also returned by `initialize` / `update_params` for zero duration, `floor_discount_bps` above 9 999, or `penalty_bps` above 10 000 | Fix the parameters (#1477) |
+| 17   | `MathOverflow`          | An amount or price does not fit an `i128`                               | Reduce the quantity or price inputs (#1476)                       |
 
 ### Fill events (#1475)
 
